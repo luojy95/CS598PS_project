@@ -1,0 +1,5 @@
+!git clone https://github.com/fxia22/pointnet.pytorch
+!cd pointnet.pytorch && pip install -e .
+!cd pointnet.pytorch/scripts && bash build.sh && bash download.sh
+!cd pointnet.pytorch && python utils/train_classification.py --dataset shapenetcore_partanno_segmentation_benchmark_v0 --nepoch=1 --dataset_type shapenet
+!cd pointnet.pytorch && python utils/train_classification.py --dataset shapenetcore_partanno_segmentation_benchmark_v0 --nepoch=1 --dataset_type shapenet --feature_transform
