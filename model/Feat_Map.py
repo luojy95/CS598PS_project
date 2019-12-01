@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import torch 
 import torch.nn as nn
-from T_Net import T_Net
+from pointnet.T_Net import T_Net
 import torch.nn.functional as F
 
 class Feat_Map(nn.Module):
@@ -32,7 +32,8 @@ class Feat_Map(nn.Module):
         
         # Perform matrix multiply
         x_ = x.permute(0, 2, 1)
-        x_ = torch.bmm(x_, self.input_trans(x))
+        trans = self.input_trans(x)
+        x_ = torch.bmm(x_, trans)
         x = x_.permute(0, 2, 1)
         
         # First mlp
@@ -53,12 +54,12 @@ class Feat_Map(nn.Module):
         # Maxpooling from n x 1024 ==> 1 x 1024
         x = torch.max(x, 2)[0]
         
-        return x_keep, x
+        return x_keep, x, trans
         
 if __name__ == "__main__":
     x = torch.randn(32, 3, 2500)
     a = Feat_Map()
-    x_keep, x = a(x)
+    x_keep, x, _ = a(x)
     x_ = x.unsqueeze(2)
     x_ = x_.repeat(1, 1, x_keep.shape[2])
     x = torch.cat((x_keep, x_), dim=1)

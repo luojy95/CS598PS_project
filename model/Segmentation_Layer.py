@@ -3,7 +3,7 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
-from Feat_Map import Feat_Map
+from pointnet.Feat_Map import Feat_Map
 
 class Segmentation_Layer(nn.Module):
     '''
@@ -13,7 +13,8 @@ class Segmentation_Layer(nn.Module):
         super(Segmentation_Layer, self).__init__()
         field = int(num_pts*reception_ratio)
         self.dilation = field//15
-        
+        self.num_classes = num_classes
+
         # Preload the Feat_Map module
         self.TOP = Feat_Map(reception_ratio=reception_ratio, num_pts=num_pts)
         
@@ -28,7 +29,7 @@ class Segmentation_Layer(nn.Module):
         self.bn3 = nn.BatchNorm1d(128)
         
     def forward(self, x):
-        x_keep, x = self.TOP(x)
+        x_keep, x, trans = self.TOP(x)
         
         # Concat to global feature map and the feature
         x_ = x.unsqueeze(2)
@@ -40,11 +41,12 @@ class Segmentation_Layer(nn.Module):
         x = F.relu(self.bn2(self.conv2(x)))
         x = F.relu(self.bn3(self.conv3(x)))
         x = self.conv4(x)
-        
-        return x.permute(0, 2, 1)
+        x = x.permute(0, 2, 1).contiguous()
+
+        return x, trans
 
 if __name__ == "__main__":
     x = torch.randn(32, 3, 2500)
     a = Segmentation_Layer(10)
-    x = a(x)  
+    x,_ = a(x)  
         

@@ -3,7 +3,7 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
-from Feat_Map import Feat_Map
+from pointnet.Feat_Map import Feat_Map
 
 class Classification_Layer(nn.Module):
     '''
@@ -27,11 +27,11 @@ class Classification_Layer(nn.Module):
         self.dropout = nn.Dropout(p=0.1)
         
     def forward(self, x):
-        _, x = self.TOP(x)
+        _, x, trans = self.TOP(x)
         x = F.relu(self.bn1(self.dropout(self.fc1(x))))
         x = F.relu(self.bn2(self.dropout(self.fc2(x))))
         x = self.fc3(x)
-        return x
+        return x, trans
 
 if __name__ == "__main__":
     x = torch.randn(32, 3, 2500)
