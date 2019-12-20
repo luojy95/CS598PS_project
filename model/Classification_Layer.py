@@ -1,9 +1,13 @@
-# -*- coding: utf-8 -*-
+# --------------------------------------------------------
+# Classification Map Layer implementation
+# Licensed under The MIT License [see LICENSE for details]
+# Author: Jiayi Luo
+# --------------------------------------------------------
 
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
-from pointnet.Feat_Map import Feat_Map
+from Feat_Map import Feat_Map
 
 class Classification_Layer(nn.Module):
     '''
@@ -24,7 +28,7 @@ class Classification_Layer(nn.Module):
         self.bn2 = nn.BatchNorm1d(256)
         
         # Define dropout layer to avoid overfitting
-        self.dropout = nn.Dropout(p=0.1)
+        self.dropout = nn.Dropout(p=0.2)
         
     def forward(self, x):
         _, x, trans = self.TOP(x)
@@ -32,6 +36,15 @@ class Classification_Layer(nn.Module):
         x = F.relu(self.bn2(self.dropout(self.fc2(x))))
         x = self.fc3(x)
         return x, trans
+
+def feature_transform_regularizer(trans):
+    d = trans.size()[1]
+    batchsize = trans.size()[0]
+    I = torch.eye(d)[None, :, :]
+    if trans.is_cuda:
+        I = I.cuda()
+    loss = torch.mean(torch.norm(torch.bmm(trans, trans.transpose(2,1)) - I, dim=(1,2)))
+    return loss
 
 if __name__ == "__main__":
     x = torch.randn(32, 3, 2500)

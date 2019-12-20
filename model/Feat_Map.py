@@ -1,7 +1,11 @@
-# -*- coding: utf-8 -*-
+# --------------------------------------------------------
+# Feature Map Layer implementation
+# Licensed under The MIT License [see LICENSE for details]
+# Author: Jiayi Luo
+# --------------------------------------------------------
 import torch 
 import torch.nn as nn
-from pointnet.T_Net import T_Net
+from T_Net import T_Net
 import torch.nn.functional as F
 
 class Feat_Map(nn.Module):
