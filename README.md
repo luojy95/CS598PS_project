@@ -26,8 +26,8 @@ Some useful resources:
 Dataset:
 -------------
 
-  * [ShapeNet](https://www.shapenet.org/))
-  * [LyftDataset]((https://level5.lyft.com/dataset/))
+  * [ShapeNet](https://www.shapenet.org/)
+  * [LyftDataset](https://level5.lyft.com/dataset/)
 
 
 Usage:
