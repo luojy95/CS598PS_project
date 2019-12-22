@@ -25,6 +25,7 @@ Some useful resources:
 
 Dataset:
 -------------
+This repo contains some sample preprocessed Lyft data
 
   * [ShapeNet](https://www.shapenet.org/)
   * [LyftDataset](https://level5.lyft.com/dataset/)
@@ -34,8 +35,9 @@ Usage:
 -------------
 
     1. Down Load either dataset
-    2. Run the train_classification.py/train_segmentation.py, remember to set the preprocess tag to True.
-    3. The model will be saved at the same directory as the script
+    2. If using LyftDataset, run utils/pre_process_LyftDataset.py
+    3. Run the model/train_classification.py or model/train_segmentation.py, remember to set the preprocess tag to True at the first time.
+    4. The model will be saved at the same directory as the script
 
 
 
