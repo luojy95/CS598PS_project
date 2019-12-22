@@ -8,7 +8,7 @@ This is the repo aims to develop the implementation code for the CS598 project.
 Authors:
 
   * [Jiayi Luo](https://github.com/luojy95/)
-  * [Zhoutong Jiang](https://github.com/)
+  * [Zhoutong Jiang](https://github.com/timilan/)
   * [Zixu Zhao](https://github.com/)
 
 Some useful resources:
